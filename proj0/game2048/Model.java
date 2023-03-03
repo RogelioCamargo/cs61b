@@ -179,37 +179,20 @@ public class Model extends Observable {
 
         for (int r = 0; r < b.size(); r++) {
             for (int c = 0; c < b.size(); c++) {
-                if (adjacentTileWithSameValueExists(b, r, c)) {
+                /**
+                 * Board is full so verifying if tile is null is not necessary. See first few lines of method.
+                 * No need to look at left adjacent tile because it's redundant.
+                 * No need to look at top adjacent tile for the same reason.
+                 */
+                boolean rightTileHasSameValue = c + 1 < b.size() && b.tile(r, c).value() == b.tile(r, c + 1).value();
+                boolean bottomTileHasSameValue = r + 1 < b.size() && b.tile(r, c).value() == b.tile(r + 1, c).value();
+                if (rightTileHasSameValue || bottomTileHasSameValue) {
                     return true;
                 }
             }
         }
         return false;
     }
-
-    public static boolean adjacentTileWithSameValueExists(Board b, int r, int c) {
-        Tile currentTile = b.tile(r, c);
-        int[][] moves = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-        for (int i = 0; i < moves.length; i++) {
-            int[] move = {r + moves[i][0], c + moves[i][1]};
-            if (!isValidTile(b, move)) {
-                continue;
-            }
-
-            Tile adjacentTile = b.tile(move[0], move[1]);
-            if (currentTile.value() == adjacentTile.value()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isValidTile(Board b, int[] move) {
-        int r = move[0];
-        int c = move[1];
-        return r >= 0 && r < b.size() && c >= 0 && c < b.size() && b.tile(r, c) != null;
-    }
-
 
     @Override
      /** Returns the model as a string, used for debugging. */
