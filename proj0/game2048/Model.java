@@ -177,8 +177,37 @@ public class Model extends Observable {
             return true;
         }
 
-
+        for (int r = 0; r < b.size(); r++) {
+            for (int c = 0; c < b.size(); c++) {
+                if (adjacentTileWithSameValueExists(b, r, c)) {
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+
+    public static boolean adjacentTileWithSameValueExists(Board b, int r, int c) {
+        Tile currentTile = b.tile(r, c);
+        int[][] moves = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+        for (int i = 0; i < moves.length; i++) {
+            int[] move = {r + moves[i][0], c + moves[i][1]};
+            if (!isValidTile(b, move)) {
+                continue;
+            }
+
+            Tile adjacentTile = b.tile(move[0], move[1]);
+            if (currentTile.value() == adjacentTile.value()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isValidTile(Board b, int[] move) {
+        int r = move[0];
+        int c = move[1];
+        return r >= 0 && r < b.size() && c >= 0 && c < b.size() && b.tile(r, c) != null;
     }
 
 
