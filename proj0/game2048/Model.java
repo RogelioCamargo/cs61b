@@ -113,14 +113,14 @@ public class Model extends Observable {
         board.setViewingPerspective(side);
 
         for (int c = 0; c < board.size(); c++) {
-            int rowStart = board.size() - 1;
+            int maxRow = board.size() - 1;
             for (int r = board.size() - 2; r >= 0; r--) {
                 Tile tile = board.tile(c, r);
                 if (tile == null) {
                     continue;
                 }
 
-                int rowToMoveTo = findRowToMoveTo(rowStart, tile);
+                int rowToMoveTo = findRowToMoveTo(c, r, maxRow);
                 if (rowToMoveTo == r) {
                     continue;
                 }
@@ -128,7 +128,7 @@ public class Model extends Observable {
                 changed = true;
                 if (board.move(c, rowToMoveTo, tile)) {
                     score += board.tile(c, rowToMoveTo).value();
-                    rowStart--;
+                    maxRow--;
                 }
             }
         }
@@ -144,15 +144,16 @@ public class Model extends Observable {
         return changed;
     }
 
-    public int findRowToMoveTo(int rowStart, Tile t) {
-        for (int r = rowStart; r > t.row(); r--) {
-            Tile tile = board.tile(t.col(), r);
-            if (tile == null || tile.value() == t.value()) {
-                return r;
+    public int findRowToMoveTo(int c, int r, int maxRow) {
+        Tile tileFrom = board.tile(c, r);
+        for (int row = maxRow; row > r; row--) {
+            Tile tileTo = board.tile(c, row);
+            if (tileTo == null || tileTo.value() == tileFrom.value()) {
+                return row;
             }
         }
 
-        return t.row();
+        return r;
     }
 
     /** Checks if the game is over and sets the gameOver variable
