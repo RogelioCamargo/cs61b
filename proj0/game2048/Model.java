@@ -110,15 +110,49 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        board.setViewingPerspective(side);
+
+        for (int c = 0; c < board.size(); c++) {
+            int rowStart = board.size() - 1;
+            for (int r = board.size() - 2; r >= 0; r--) {
+                Tile tile = board.tile(c, r);
+                if (tile == null) {
+                    continue;
+                }
+
+                int rowToMoveTo = findRowToMoveTo(rowStart, tile);
+                if (rowToMoveTo == r) {
+                    continue;
+                }
+
+                changed = true;
+                if (board.move(c, rowToMoveTo, tile)) {
+                    score += board.tile(c, rowToMoveTo).value();
+                    rowStart--;
+                }
+            }
+        }
+
+
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
         return changed;
+    }
+
+    public int findRowToMoveTo(int rowStart, Tile t) {
+        for (int r = rowStart; r > t.row(); r--) {
+            Tile tile = board.tile(t.col(), r);
+            if (tile == null || tile.value() == t.value()) {
+                return r;
+            }
+        }
+
+        return t.row();
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -137,10 +171,9 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        int size = b.size();
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                if (b.tile(r, c) == null) {
+        for (int c = 0; c < b.size(); c++) {
+            for (int r = 0; r < b.size(); r++) {
+                if (b.tile(c, r) == null) {
                     return true;
                 }
             }
@@ -154,10 +187,9 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        int size = b.size();
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                Tile tile = b.tile(r, c);
+        for (int c = 0; c < b.size(); c++) {
+            for (int r = 0; r < b.size(); r++) {
+                Tile tile = b.tile(c, r);
                 if (tile != null && tile.value() == Model.MAX_PIECE) {
                     return true;
                 }
@@ -177,15 +209,15 @@ public class Model extends Observable {
             return true;
         }
 
-        for (int r = 0; r < b.size(); r++) {
-            for (int c = 0; c < b.size(); c++) {
+        for (int c = 0; c < b.size(); c++) {
+            for (int r = 0; r < b.size(); r++) {
                 /**
                  * Board is full so verifying if tile is null is not necessary. See first few lines of method.
                  * No need to look at left adjacent tile because it's redundant.
                  * No need to look at top adjacent tile for the same reason.
                  */
-                boolean rightTileHasSameValue = c + 1 < b.size() && b.tile(r, c).value() == b.tile(r, c + 1).value();
-                boolean bottomTileHasSameValue = r + 1 < b.size() && b.tile(r, c).value() == b.tile(r + 1, c).value();
+                boolean rightTileHasSameValue = c + 1 < b.size() && b.tile(c, r).value() == b.tile(r, c + 1).value();
+                boolean bottomTileHasSameValue = r + 1 < b.size() && b.tile(c, r).value() == b.tile(r + 1, c).value();
                 if (rightTileHasSameValue || bottomTileHasSameValue) {
                     return true;
                 }
