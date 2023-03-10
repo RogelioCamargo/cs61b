@@ -1,5 +1,6 @@
 package timingtest;
 import edu.princeton.cs.algs4.Stopwatch;
+import org.eclipse.jetty.io.ssl.SslConnection;
 
 /**
  * Created by hug.
@@ -22,7 +23,26 @@ public class TimeSLList {
     }
 
     public static void timeGetLast() {
-        // TODO: YOUR CODE HERE
+        int[] Ns = {1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000};
+        AList<Integer> nList = new AList<>();
+        AList<Double> timeList = new AList<>();
+        AList<Integer> opsList = new AList<>();
+        int OPS = 10000;
+        for (int i = 0; i < Ns.length; i++) {
+            nList.addLast(Ns[i]);
+            opsList.addLast(OPS);
+            SLList<Integer> testList = new SLList<>();
+            for (int j = 0; j < Ns[i]; j++) {
+                testList.addLast(j);
+            }
+
+            Stopwatch sw = new Stopwatch();
+            for (int h = 0; h < OPS; h++) {
+                testList.getLast();
+            }
+            timeList.addLast(sw.elapsedTime());
+        }
+        printTimingTable(nList, timeList, opsList);
     }
 
 }
