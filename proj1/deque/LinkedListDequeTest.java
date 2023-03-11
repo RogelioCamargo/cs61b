@@ -116,15 +116,15 @@ public class LinkedListDequeTest {
     @Test
     public void getTest() {
         LinkedListDeque<Integer> lld = new LinkedListDeque<>();
-        for (int i = 1; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             lld.addLast(i);
         }
 
-        for (double i = 1; i < 100; i++) {
+        for (double i = 0; i < 100; i++) {
             assertEquals(i, (double) lld.get((int) i), 0.0);
         }
 
-        for (double i = 1; i < 100; i++) {
+        for (double i = 0; i < 100; i++) {
             assertEquals(i, (double) lld.getRecursive((int) i), 0.0);
         }
 

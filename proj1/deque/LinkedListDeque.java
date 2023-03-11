@@ -56,9 +56,10 @@ public class LinkedListDeque<T> implements Deque<T> {
     public  void printDeque() {
         TNode current = sentinel.next;
         while (current.item != null) {
-            System.out.println(current.item);
+            System.out.print(current.item + " ");
             current = current.next;
         }
+        System.out.println();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public T get(int index) {
         TNode current = sentinel.next;
-        int startIndex = 1;
+        int startIndex = 0;
         while (current.item != null) {
             if (startIndex == index) {
                 return current.item;
@@ -107,7 +108,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     public T getRecursive(int index) {
-        return getRecursiveHelper(sentinel.next, 1, index);
+        return getRecursiveHelper(sentinel.next, 0, index);
     }
 
     private T getRecursiveHelper(TNode current, int startIndex, int targetIndex) {
