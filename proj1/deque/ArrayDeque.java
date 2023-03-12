@@ -72,7 +72,7 @@ public class ArrayDeque<T> implements Deque<T> {
     }
     @Override
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
 
@@ -90,7 +90,7 @@ public class ArrayDeque<T> implements Deque<T> {
     }
     @Override
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
 
