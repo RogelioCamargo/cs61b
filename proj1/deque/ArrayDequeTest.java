@@ -3,6 +3,7 @@ package deque;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+
 public class ArrayDequeTest {
 
     @Test
@@ -36,15 +37,15 @@ public class ArrayDequeTest {
 
         ArrayDeque<Integer> ad = new ArrayDeque<Integer>();
         // should be empty
-        assertTrue("lld1 should be empty upon initialization", ad.isEmpty());
+        assertTrue("ad should be empty upon initialization", ad.isEmpty());
 
         ad.addFirst(10);
         // should not be empty
-        assertFalse("lld1 should contain 1 item", ad.isEmpty());
+        assertFalse("ad should contain 1 item", ad.isEmpty());
 
         ad.removeFirst();
         // should be empty
-        assertTrue("lld1 should be empty after removal", ad.isEmpty());
+        assertTrue("ad should be empty after removal", ad.isEmpty());
     }
 
     @Test
@@ -88,8 +89,9 @@ public class ArrayDequeTest {
 
     @Test
     /* Add large number of elements to deque; check if order is correct */
-    public void bigLLDequeTest() {
+    public void bigADequeTest() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
+
         for (int i = 0; i < 1000000; i++) {
             ad.addLast(i);
         }
@@ -121,5 +123,4 @@ public class ArrayDequeTest {
         }
     }
 }
-
 
