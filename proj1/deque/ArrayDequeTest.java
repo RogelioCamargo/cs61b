@@ -168,5 +168,40 @@ public class ArrayDequeTest {
             }
         }
     }
+
+    @Test
+    public void testEquals() {
+        ArrayDeque<String> deque1 = new ArrayDeque<String>();
+        ArrayDeque<String> deque2 = new ArrayDeque<String>();
+
+        // Test that two empty deques are equal
+        assertTrue(deque1.equals(deque2));
+
+        deque1.addFirst("Hello");
+        deque1.addLast("World");
+
+        deque2.addFirst("Hello");
+        deque2.addLast("World");
+
+        // Test that two deques with same elements in same order are equal
+        assertTrue(deque1.equals(deque2));
+
+        deque2.addFirst("Greetings");
+
+        // Test that two deques with same elements in different order are not equal
+        assertFalse(deque1.equals(deque2));
+
+        ArrayDeque<Integer> deque3 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> deque4 = new ArrayDeque<Integer>();
+
+        deque3.addFirst(1);
+        deque3.addLast(2);
+
+        deque4.addFirst(1);
+        deque4.addLast(3);
+
+        // Test that two deques with different elements are not equal
+        assertFalse(deque3.equals(deque4));
+    }
 }
 
