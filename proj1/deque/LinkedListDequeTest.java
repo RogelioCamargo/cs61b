@@ -176,4 +176,39 @@ public class LinkedListDequeTest {
             }
         }
     }
+
+    @Test
+    public void testEquals() {
+        LinkedListDeque<String> deque1 = new LinkedListDeque<String>();
+        LinkedListDeque<String> deque2 = new LinkedListDeque<String>();
+
+        // Test that two empty deques are equal
+        assertTrue(deque1.equals(deque2));
+
+        deque1.addFirst("Hello");
+        deque1.addLast("World");
+
+        deque2.addFirst("Hello");
+        deque2.addLast("World");
+
+        // Test that two deques with same elements in same order are equal
+        assertTrue(deque1.equals(deque2));
+
+        deque2.addFirst("Greetings");
+
+        // Test that two deques with same elements in different order are not equal
+        assertFalse(deque1.equals(deque2));
+
+        LinkedListDeque<Integer> deque3 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> deque4 = new LinkedListDeque<Integer>();
+
+        deque3.addFirst(1);
+        deque3.addLast(2);
+
+        deque4.addFirst(1);
+        deque4.addLast(3);
+
+        // Test that two deques with different elements are not equal
+        assertFalse(deque3.equals(deque4));
+    }
 }
