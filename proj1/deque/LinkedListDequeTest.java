@@ -2,6 +2,8 @@ package deque;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.Iterator;
+import java.util.Random;
 
 
 /** Performs some basic linked list tests. */
@@ -130,5 +132,48 @@ public class LinkedListDequeTest {
 
         assertEquals(null, lld.get(101));
         assertEquals(null, lld.getRecursive(101));
+    }
+
+    @Test
+    public void testIterator() {
+        LinkedListDeque<String> deque = new LinkedListDeque<String>();
+        deque.addFirst("a");
+        deque.addFirst("b");
+        deque.addFirst("c");
+
+        Iterator<String> iterator = deque.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals("c", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("b", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("a", iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testRandomCalls() {
+        LinkedListDeque<Integer> deque = new LinkedListDeque<Integer>();
+        Random random = new Random();
+
+        for (int i = 0; i < 1000; i++) {
+            int operation = random.nextInt(4);
+
+            if (operation == 0) {
+                int value = random.nextInt();
+                deque.addFirst(value);
+            } else if (operation == 1) {
+                int value = random.nextInt();
+                deque.addLast(value);
+            } else if (operation == 2 && !deque.isEmpty()) {
+                int expectedValue = deque.get(0);
+                int actualValue = deque.removeFirst();
+                assertEquals(expectedValue, actualValue);
+            } else if (operation == 3 && !deque.isEmpty()) {
+                int expectedValue = deque.get(deque.size() - 1);
+                int actualValue = deque.removeLast();
+                assertEquals(expectedValue, actualValue);
+            }
+        }
     }
 }

@@ -1,8 +1,11 @@
 package deque;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import java.util.Iterator;
+import java.util.Random;
+
+import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
 
@@ -120,6 +123,49 @@ public class ArrayDequeTest {
 
         for (int i = 0; i < 100; i++) {
             ad.removeLast();
+        }
+    }
+
+    @Test
+    public void testIterator() {
+        ArrayDeque<String> deque = new ArrayDeque<String>();
+        deque.addFirst("a");
+        deque.addFirst("b");
+        deque.addFirst("c");
+
+        Iterator<String> iterator = deque.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals("c", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("b", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("a", iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testRandomCalls() {
+        ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
+        Random random = new Random();
+
+        for (int i = 0; i < 1000; i++) {
+            int operation = random.nextInt(4);
+
+            if (operation == 0) {
+                int value = random.nextInt();
+                deque.addFirst(value);
+            } else if (operation == 1) {
+                int value = random.nextInt();
+                deque.addLast(value);
+            } else if (operation == 2 && !deque.isEmpty()) {
+                int expectedValue = deque.get(0);
+                int actualValue = deque.removeFirst();
+                assertEquals(expectedValue, actualValue);
+            } else if (operation == 3 && !deque.isEmpty()) {
+                int expectedValue = deque.get(deque.size() - 1);
+                int actualValue = deque.removeLast();
+                assertEquals(expectedValue, actualValue);
+            }
         }
     }
 }
